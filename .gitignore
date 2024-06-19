@@ -1,1 +1,3 @@
-Court*
+CourtTrial/
+*.zip
+__pycache__

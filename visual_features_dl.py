@@ -58,9 +58,12 @@ class CNNModel(torch.nn.Module):
 
             torch.nn.Conv3d(64, 32, kernel_size=(2,2,2)),
             torch.nn.MaxPool3d((2,2,2)),
+            torch.nn.MaxPool3d((4, 4, 4)),
             torch.nn.ReLU(),
 
-            torch.nn.Linear(11520, 5000),
+            torch.nn.Flatten(),
+
+            torch.nn.Linear(21888, 5000),
             torch.nn.ReLU(),
 
             torch.nn.Linear(5000, 500),
@@ -94,7 +97,7 @@ for i in range(5):
 
 print("[red]Making model...")
 model = CNNModel()
-model = torch.nn.DataParallel(model)
+# model = torch.nn.DataParallel(model)
 model.to(device)
 print("[green]Model:", model)
 
@@ -113,7 +116,7 @@ print("[green]Test dataset size:", len(test_dataset))
 
 print("[red]Number of truths and lies in training dataset:", train_dataset.truth_lies())
 print("[green]Number of truths and lies in test dataset:", test_dataset.truth_lies())
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=2, shuffle=True, collate_fn=collater)
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=1, shuffle=True, collate_fn=collater)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, collate_fn=collater)
 
 print("[red]Training model...")
